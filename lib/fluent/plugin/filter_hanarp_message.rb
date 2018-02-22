@@ -13,17 +13,12 @@ module Fluent::Plugin
 
       split = record["message"].split(": ")
 
-      host = record[ucsHostNameKey]
-
       message = split[4]
-      event = determineEvent(message)
 
-      temp3 = split[3]
-      stageSplit = temp3.split(" ")
-      stage = determineStage(stageSplit[1])
-
+      event = record["event"]
+      stage = record["stage"]
+      host = record[ucsHostNameKey]
       chassis = message[/chassis-(\d)/,1]
-
       blade = message[/blade-(\d)/,1]
 
       if record.key?("machineId")
@@ -35,30 +30,6 @@ module Fluent::Plugin
       m = Message.new(time, event, d)
       record["message"] = m.to_json
       record
-    end
-
-    def determineEvent(message)
-      case message
-        when /Power-on/
-          event = "Boot"
-        when /Soft shutdown/
-          event = "Soft Shutdown"
-        when /Hard shutdown/
-          event = "Hard Shutdown"
-        when /Power-cycle/
-          event = "Restart"
-      end
-      event
-    end
-
-    def determineStage(stage)
-      case stage
-        when /BEGIN/
-          stage = "Begin"
-        when /END/
-          stage = "End"
-      end
-      stage
     end
   end
 

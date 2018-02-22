@@ -37,7 +37,9 @@ class AddServiceProfile < Test::Unit::TestCase
             { 
                 "message" => ": 2018 Feb  9 21:07:41 GMT: %UCSM-6-EVENT: [] [FSM:BEGIN]: Soft shutdown of server sys/chassis-4/blade-7",
                 "machineId" => "Cisco_UCS:SJC2:testServiceProfile",
-                "SyslogSource" => "1.1.1.1"
+                "SyslogSource" => "1.1.1.1",
+                "event" => "Soft Shutdown",
+                "stage" => "begin"
             }
         ]
         filtered_records = filter(messages)
@@ -49,7 +51,7 @@ class AddServiceProfile < Test::Unit::TestCase
         assert_equal "4", data['data']['chassis']
         assert_equal "7", data['data']['blade']
         assert_equal "testServiceProfile", data['data']['serviceProfile']
-        assert_equal "Begin", data['data']['stage']
+        assert_equal "begin", data['data']['stage']
         
         assert_equal "Cisco_UCS:SJC2:testServiceProfile", filtered_records[0]['machineId']
         assert_equal "1.1.1.1", filtered_records[0]['SyslogSource']
@@ -59,7 +61,9 @@ class AddServiceProfile < Test::Unit::TestCase
         messages = [
             { 
                 "message" => ": 2018 Feb  9 21:07:41 GMT: %UCSM-6-EVENT: [] [FSM:BEGIN]: Soft shutdown of server sys/chassis-4/blade-7",
-                "SyslogSource" => "1.1.1.1"
+                "SyslogSource" => "1.1.1.1",
+                "event" => "Soft Shutdown",
+                "stage" => "begin"
             }
         ]
         filtered_records = filter(messages)
@@ -71,7 +75,7 @@ class AddServiceProfile < Test::Unit::TestCase
         assert_equal "4", data['data']['chassis']
         assert_equal "7", data['data']['blade']
         assert_equal nil, data['data']['serviceProfile']
-        assert_equal "Begin", data['data']['stage']
+        assert_equal "begin", data['data']['stage']
         
         assert_equal nil, filtered_records[0]['machineId']
         assert_equal "1.1.1.1", filtered_records[0]['SyslogSource']
