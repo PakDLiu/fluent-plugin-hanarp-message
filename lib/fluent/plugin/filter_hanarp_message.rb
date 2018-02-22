@@ -26,9 +26,10 @@ module Fluent::Plugin
 
       blade = message[/blade-(\d)/,1]
 
-      machineId = record["machineId"]
-
-      serviceProfile = machineId.split(":")[2]
+      if record.key?("machineId")
+        machineId = record["machineId"]
+        serviceProfile = machineId.split(":")[2]
+      end
 
       d = Data.new(machineId, host, chassis, blade, serviceProfile, stage, message)
       m = Message.new(time, event, d)
