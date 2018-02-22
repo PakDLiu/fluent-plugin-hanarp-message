@@ -7,13 +7,14 @@ module Fluent::Plugin
   class HanarpMessage < Filter
     Fluent::Plugin.register_filter("hanarp_message", self)
 
+    config_param :ucsHostNameKey, :string
     config_param :coloregion, :string
 
     def filter(tag, time, record)
 
       split = record["message"].split(": ")
 
-      host = record["host"]
+      host = record[ucsHostNameKey]
 
       message = split[4]
       event = determineEvent(message)

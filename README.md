@@ -11,10 +11,11 @@
 
     <filter **>
         @type hanarp_message
+        ucsHostNameKey SyslogSource
         coloregion SJC2
     </filter>
 
-Will transform UCS syslog messages to hanarp messages to send to Service Bus Queue.
+Will transform UCS syslog messages to hanarp messages to send to Service Bus Queue. It will look in the record hash for "SyslogSource" key to get hostname.
 Message format:
 
     {
