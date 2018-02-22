@@ -8,7 +8,6 @@ module Fluent::Plugin
     Fluent::Plugin.register_filter("hanarp_message", self)
 
     config_param :ucsHostNameKey, :string
-    config_param :coloregion, :string
 
     def filter(tag, time, record)
 
@@ -27,9 +26,9 @@ module Fluent::Plugin
 
       blade = message[/blade-(\d)/,1]
 
-      serviceProfile = record["serviceProfile"]
+      machineId = record["machineId"]
 
-      machineId = "Cisco_UCS:#{coloregion}:#{serviceProfile}"
+      serviceProfile = machineId.split(":")[2]
 
       d = Data.new(machineId, host, chassis, blade, serviceProfile, stage, message)
       m = Message.new(time, event, d)

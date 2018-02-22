@@ -11,7 +11,6 @@ class AddServiceProfile < Test::Unit::TestCase
     CONFIG = %[
         @type hanarp_message
         ucsHostNameKey SyslogSource
-        coloregion SJC2
       ]
 
     def create_driver(conf = CONFIG)
@@ -30,7 +29,6 @@ class AddServiceProfile < Test::Unit::TestCase
 
     def test_configure
         d = create_driver
-        assert_equal 'SJC2', d.instance.coloregion
         assert_equal 'SyslogSource', d.instance.ucsHostNameKey
     end
 
@@ -38,7 +36,7 @@ class AddServiceProfile < Test::Unit::TestCase
         messages = [
             { 
                 "message" => ": 2018 Feb  9 21:07:41 GMT: %UCSM-6-EVENT: [] [FSM:BEGIN]: Soft shutdown of server sys/chassis-4/blade-7",
-                "serviceProfile" => "testServiceProfile",
+                "machineId" => "Cisco_UCS:SJC2:testServiceProfile",
                 "SyslogSource" => "1.1.1.1"
             }
         ]
@@ -53,7 +51,7 @@ class AddServiceProfile < Test::Unit::TestCase
         assert_equal "testServiceProfile", data['data']['serviceProfile']
         assert_equal "Begin", data['data']['stage']
         
-        assert_equal "testServiceProfile", filtered_records[0]['serviceProfile']
+        assert_equal "Cisco_UCS:SJC2:testServiceProfile", filtered_records[0]['machineId']
         assert_equal "1.1.1.1", filtered_records[0]['SyslogSource']
     end
 end
